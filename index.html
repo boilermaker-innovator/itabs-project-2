@@ -1,4 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iTabs 👍i Creator</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3651d4;
+            --light-bg: #f8f9fa;
+            --border-color: #e2e8f0;
+            --text-dark: #2d3748;
+            --text-medium: #4a5568;
+            --text-light: #718096;
+            --success-color: #38a169;
+            --danger-color: #e53e3e;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+        }
+
+        .teaser-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .teaser-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .teaser-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .teaser-description {
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tabs Navigation */
+        .tabs-nav {
+            display: flex;
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-button {
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            color: var(--text-medium);
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            background: white;
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 25px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Form Styling */
+        .form-container {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .color-picker {
+            height: 40px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .emoji-option {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .emoji-option:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+        }
+
+        .emoji-option.selected {
+            background: #ebf4ff;
+            border-color: var(--primary-color);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e0;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c53030;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #2f855a;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Theme Selection */
+        .themes-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .theme-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .theme-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .theme-preview.selected {
+            border-color: var(--primary-color);
+        }
+
+        .theme-name {
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+
+        .theme-indicator {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        /* Preview Box */
+        .preview-box {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .preview-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        /* Live Widget Preview Styles */
+        .widget-preview {
+            position: relative;
+            margin: 0 auto;
+            display: inline-block;
+        }
+
+        /* 👍i Widget Styles */
+        .thumbs-widget {
+            position: relative;
+            display: inline-block;
+        }
+
+        .thumbs-button {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .i-indicator {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        /* Live Preview Widget */
+        .live-preview-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #f0f5ff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e7ff;
+            margin-bottom: 20px;
+        }
+
+        .live-preview-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .live-preview-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .live-preview-text {
+            color: var(--text-medium);
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        /* Reaction Options */
+        .thumbs-popup {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: white;
+            width: 300px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .popup-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .reaction-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: var(--light-bg);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reaction-option:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .reaction-emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .popup-close {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Thank You Message Popup */
+        .thanks-popup {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: white;
+            width: 300px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .thanks-emoji {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        .thanks-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .thanks-message {
+            color: var(--text-medium);
+            margin-bottom: 15px;
+        }
+
+        /* Toast Message */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            z-index: 1000;
+            display: none;
+        }
+
+        /* Message Box */
+        .message-box {
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .message-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        /* Code container */
+        .code-container {
+            margin-top: 20px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .code-title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .code-preview {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emoji-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .teaser-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .tab-button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="teaser-container">
+        <div class="teaser-header">
+            <h1 class="teaser-title">iTabs 👍i Creator</h1>
+            <p class="teaser-description">Create your own customized 👍i widgets with thank you messages in minutes - no coding required!</p>
+        </div>
+        
+        <div class="tabs-nav">
+            <button class="tab-button active" onclick="switchTab('create')">Create Widget</button>
+            <button class="tab-button" onclick="switchTab('messages')">Thank You Messages</button>
+            <button class="tab-button" onclick="switchTab('preview')">Preview</button>
+            <button class="tab-button" onclick="switchTab('code')">Get Code</button>
+            <button class="tab-button" onclick="switchTab('save')">Save/Load</button>
+        </div>
+        
+        <div id="create-tab" class="tab-content active">
+            <div class="form-container">
+                <h2 class="form-title">Design Your Widget</h2>
+                <p>Customize the appearance and behavior of your 👍i widget.</p>
+                
+                <div class="themes-container">
+                    <div class="theme-option" onclick="applyTheme('light')">
+                        <div class="theme-preview selected" style="background-color: #ffffff;">
+                            <span>👍</span>
+                            <div class="theme-indicator" style="background-color: #4361ee;"></div>
+                        </div>
+                        <span class="theme-name">Light</span>
+                    </div>
+                    <div class="theme-option" onclick="applyTheme('dark')">
+                        <div class="theme-preview" style="background-color: #2d3748;">
+                            <span style="color: white;">👍</span>
+                            <div class="theme-indicator" style="background-color: #bf125d;"></div>
+                        </div>
+                        <span class="theme-name">Dark</span>
+                    </div>
+                    <div class="theme-option" onclick="applyTheme('green')">
+                        <div class="theme-preview" style="background-color: #e6ffec;">
+                            <span>👍</span>
+                            <div class="theme-indicator" style="background-color: #0d9488;"></div>
+                        </div>
+                        <span class="theme-name">Green</span>
+                    </div>
+                    <div class="theme-option" onclick="applyTheme('blue')">
+                        <div class="theme-preview" style="background-color: #ebf8ff;">
+                            <span>👍</span>
+                            <div class="theme-indicator" style="background-color: #3182ce;"></div>
+                        </div>
+                        <span class="theme-name">Blue</span>
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Main Emoji</label>
+                            <div class="emoji-grid" id="main-emoji-grid">
+                                <div class="emoji-option selected" data-emoji="👍" onclick="selectMainEmoji(this)">👍</div>
+                                <div class="emoji-option" data-emoji="❤️" onclick="selectMainEmoji(this)">❤️</div>
+                                <div class="emoji-option" data-emoji="🔥" onclick="selectMainEmoji(this)">🔥</div>
+                                <div class="emoji-option" data-emoji="😊" onclick="selectMainEmoji(this)">😊</div>
+                                <div class="emoji-option" data-emoji="⭐" onclick="selectMainEmoji(this)">⭐</div>
+                                <div class="emoji-option" onclick="selectCustomEmoji()">+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Indicator Symbol</label>
+                            <div class="emoji-grid" id="indicator-grid">
+                                <div class="emoji-option selected" data-emoji="i" onclick="selectIndicator(this)">i</div>
+                                <div class="emoji-option" data-emoji="+" onclick="selectIndicator(this)">+</div>
+                                <div class="emoji-option" data-emoji="?" onclick="selectIndicator(this)">?</div>
+                                <div class="emoji-option" data-emoji="!" onclick="selectIndicator(this)">!</div>
+                                <div class="emoji-option" data-emoji="•" onclick="selectIndicator(this)">•</div>
+                                <div class="emoji-option" onclick="selectCustomIndicator()">+</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Widget Title</label>
+                            <input type="text" class="form-control" id="widget-title" value="What do you think?" placeholder="Enter widget title">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Button Size (pixels)</label>
+                            <input type="number" class="form-control" id="button-size" value="70" min="40" max="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Thank You Display Time (seconds)</label>
+                            <input type="number" class="form-control" id="thanks-duration" value="3" min="1" max="10">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Main Button Color</label>
+                            <input type="color" class="form-control color-picker" id="main-color" value="#ffffff">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Indicator Color</label>
+                            <input type="color" class="form-control color-picker" id="indicator-color" value="#4361ee">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Widget Position</label>
+                            <select class="form-control" id="widget-position">
+                                <option value="bottom-right">Bottom Right</option>
+                                <option value="bottom-left">Bottom Left</option>
+                                <option value="top-right">Top Right</option>
+                                <option value="top-left">Top Left</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Reaction Options (one per line, emoji first)</label>
+                    <textarea class="form-control" id="reaction-options" rows="5" placeholder="Enter reaction options, one per line">👍 This is helpful
+❤️ I love this
+🔥 This is amazing
+💡 Very informative</textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="updateWidget()">Update Widget</button>
+                    <button class="btn btn-danger" onclick="resetWidget()">Reset to Default</button>
+                    <button class="btn btn-success" onclick="saveWidgetConfig()">Save Configuration</button>
+                    <button class="btn btn-primary" onclick="switchTab('messages')">Next: Thank You Messages</button>
+                </div>
+            </div>
+
+            <div class="preview-box">
+                <h3 class="preview-title">Live Preview</h3>
+                <div class="widget-preview">
+                    <div id="preview-button" class="thumbs-button" style="width: 70px; height: 70px;">
+                        👍
+                        <div id="preview-indicator" class="i-indicator">i</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="messages-tab" class="tab-content">
+            <div class="form-container">
+                <h2 class="form-title">Customize Thank You Messages</h2>
+                <p>Personalize the messages that appear after a user selects a specific reaction.</p>
+                
+                <div id="thankyou-container">
+                    <!-- Reaction message templates will be populated here -->
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="updateThankYouMessages()">Update Messages</button>
+                    <button class="btn btn-primary" onclick="switchTab('preview')">Next: Preview Widget</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="preview-tab" class="tab-content">
+            <h2>Live Widget Preview</h2>
+            <p>Click the button in the corner to see your widget in action.</p>
+
+            <div class="live-preview-container">
+                <div class="live-preview-content">
+                    <h3 class="live-preview-title">Demo Area</h3>
+                    <p class="live-preview-text">This is a simulated webpage environment. Try clicking on the widget button to see your custom reactions and thank you messages in action.</p>
+                    <div style="margin-top: 20px; padding: 15px; background: #e0f2fe; border-radius: 6px; display: inline-block;">
+                        <strong>Testing Instructions:</strong>
+                        <ol style="margin-top: 5px; padding-left: 20px;">
+                            <li>Click the widget button</li>
+                            <li>Select one of your reaction options</li>
+                            <li>View your custom thank you message</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div id="demo-widget" class="thumbs-widget" style="position: absolute; bottom: 20px; right: 20px;">
+                    <div id="demo-button" class="thumbs-button" onclick="toggleReactionsPopup()">
+                        👍
+                        <div id="demo-indicator" class="i-indicator">i</div>
+                    </div>
+                    
+                    <div id="demo-reactions" class="thumbs-popup">
+                        <div id="demo-popup-title" class="popup-title">What do you think?</div>
+                        
+                        <div id="demo-reaction-options"></div>
+                        
+                        <div class="popup-close" onclick="closeAllPopups()">Close</div>
+                    </div>
+                    
+                    <div id="demo-thanks" class="thanks-popup">
+                        <div id="demo-thanks-emoji" class="thanks-emoji">👍</div>
+                        <div id="demo-thanks-title" class="thanks-title">Thank you!</div>
+                        <div id="demo-thanks-message" class="thanks-message">We're glad you found this helpful.</div>
+                        <div class="popup-close" onclick="closeAllPopups()">Close</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="message-box">
+                <div class="message-title">How to interact with the preview:</div>
+                <ol>
+                    <li>Click the widget button to open the reactions popup</li>
+                    <li>Select a reaction to see the thank you message</li>
+                    <li>The thank you message will automatically close after the configured duration</li>
+                </ol>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="updatePreview()">Update Preview</button>
+                <button class="btn btn-primary" onclick="switchTab('code')">Next: Get Code</button>
+            </div>
+        </div>
+        
+        <div id="code-tab" class="tab-content">
+            <h2>Get Your Widget Code</h2>
+            <p>Copy the code below and paste it into your website to add your customized widget with thank you messages.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">All-in-One Widget Code</div>
+                    <div>
+                        <button class="btn btn-primary" onclick="copyCode()">Copy Code</button>
+                    </div>
+                </div>
+                <pre class="code-preview" id="generated-code"></pre>
+            </div>
+
+            <div class="message-box">
+                <div class="message-title">Installation Instructions:</div>
+                <ol>
+                    <li>Copy the code above using the "Copy Code" button</li>
+                    <li>Paste it anywhere within the <body> tag of your HTML page</li>
+                    <li>That's it! The widget will appear in the selected position on your webpage</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div id="save-tab" class="tab-content">
+            <h2>Save & Load Configurations</h2>
+            <p>Save your current configuration or load a previously saved one.</p>
+
+            <div class="form-container">
+                <h3 class="form-title">Save Current Configuration</h3>
+                <div class="form-group">
+                    <label class="form-label">Configuration Name</label>
+                    <input type="text" class="form-control" id="config-name" placeholder="Enter a name for this configuration">
+                </div>
+                <button class="btn btn-primary" onclick="saveNamedConfig()">Save Configuration</button>
+            </div>
+
+            <div class="form-container">
+                <h3 class="form-title">Saved Configurations</h3>
+                <div id="saved-configs" class="saved-config-list">
+                    <div class="message-box" style="margin-top: 0;">
+                        <p>No saved configurations yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Widget configuration object with default values
+        let widgetConfig = {
+            mainEmoji: "👍",
+            indicator: "i",
+            title: "What do you think?",
+            buttonSize: 70,
+            thanksDuration: 3,
+            mainColor: "#ffffff",
+            indicatorColor: "#4361ee",
+            position: "bottom-right",
+            reactions: [
+                { emoji: "👍", text: "This is helpful", title: "Thank you!", message: "We're glad you found this helpful." },
+                { emoji: "❤️", text: "I love this", title: "Thanks for the love!", message: "We're thrilled that you love this content." },
+                { emoji: "🔥", text: "This is amazing", title: "You're awesome!", message: "Thanks for letting us know this content is amazing." },
+                { emoji: "💡", text: "Very informative", title: "Knowledge is power!", message: "We're happy you found this information valuable." }
+            ]
+        };
+
+        // Theme presets
+        const themes = {
+            light: { mainColor: "#ffffff", indicatorColor: "#4361ee" },
+            dark: { mainColor: "#2d3748", indicatorColor: "#bf125d" },
+            green: { mainColor: "#e6ffec", indicatorColor: "#0d9488" },
+            blue: { mainColor: "#ebf8ff", indicatorColor: "#3182ce" }
+        };
+
+        // Initialize when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedConfig();
+            initializeWidget();
+            updateThankYouMessages();
+            updatePreview();
+        });
+
+        // Tab switching function
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            document.querySelector(`[onclick="switchTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Initialize widget with current config
+        function initializeWidget() {
+            updateWidget();
+            updatePreview();
+            populateThankYouMessages();
+        }
+
+        // Update widget preview
+        function updateWidget() {
+            widgetConfig.mainEmoji = document.querySelector('#main-emoji-grid .selected')?.dataset.emoji || "👍";
+            widgetConfig.indicator = document.querySelector('#indicator-grid .selected')?.dataset.emoji || "i";
+            widgetConfig.title = document.getElementById('widget-title').value;
+            widgetConfig.buttonSize = parseInt(document.getElementById('button-size').value);
+            widgetConfig.thanksDuration = parseInt(document.getElementById('thanks-duration').value);
+            widgetConfig.mainColor = document.getElementById('main-color').value;
+            widgetConfig.indicatorColor = document.getElementById('indicator-color').value;
+            widgetConfig.position = document.getElementById('widget-position').value;
+            widgetConfig.reactions = parseReactionOptions(document.getElementById('reaction-options').value);
+
+            const previewButton = document.getElementById('preview-button');
+            const previewIndicator = document.getElementById('preview-indicator');
+            previewButton.innerHTML = `${widgetConfig.mainEmoji}<div id="preview-indicator" class="i-indicator">${widgetConfig.indicator}</div>`;
+            previewButton.style.width = `${widgetConfig.buttonSize}px`;
+            previewButton.style.height = `${widgetConfig.buttonSize}px`;
+            previewButton.style.backgroundColor = widgetConfig.mainColor;
+            previewIndicator.style.backgroundColor = widgetConfig.indicatorColor;
+        }
+
+        // Parse reaction options from textarea
+        function parseReactionOptions(text) {
+            return text.split('\n').map(line => {
+                const [emoji, ...rest] = line.trim().split(' ');
+                const text = rest.join(' ');
+                const existing = widgetConfig.reactions.find(r => r.emoji === emoji) || {};
+                return { emoji, text, title: existing.title || "Thank you!", message: existing.message || "Thanks for your feedback!" };
+            });
+        }
+
+        // Reset to default
+        function resetWidget() {
+            widgetConfig = {
+                mainEmoji: "👍",
+                indicator: "i",
+                title: "What do you think?",
+                buttonSize: 70,
+                thanksDuration: 3,
+                mainColor: "#ffffff",
+                indicatorColor: "#4361ee",
+                position: "bottom-right",
+                reactions: [
+                    { emoji: "👍", text: "This is helpful", title: "Thank you!", message: "We're glad you found this helpful." },
+                    { emoji: "❤️", text: "I love this", title: "Thanks for the love!", message: "We're thrilled that you love this content." },
+                    { emoji: "🔥", text: "This is amazing", title: "You're awesome!", message: "Thanks for letting us know this content is amazing." },
+                    { emoji: "💡", text: "Very informative", title: "Knowledge is power!", message: "We're happy you found this information valuable." }
+                ]
+            };
+            applyConfigToForm();
+            updateWidget();
+            updateThankYouMessages();
+            updatePreview();
+        }
+
+        // Apply theme
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            widgetConfig.mainColor = theme.mainColor;
+            widgetConfig.indicatorColor = theme.indicatorColor;
+            document.getElementById('main-color').value = theme.mainColor;
+            document.getElementById('indicator-color').value = theme.indicatorColor;
+            document.querySelectorAll('.theme-preview').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`[onclick="applyTheme('${themeName}')"] .theme-preview`).classList.add('selected');
+            updateWidget();
+        }
+
+        // Emoji selection
+        function selectMainEmoji(element) {
+            document.querySelectorAll('#main-emoji-grid .emoji-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            updateWidget();
+        }
+
+        function selectIndicator(element) {
+            document.querySelectorAll('#indicator-grid .emoji-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            updateWidget();
+        }
+
+        // Placeholder for custom emoji/indicator (not implemented fully)
+        function selectCustomEmoji() { alert('Custom emoji selection not implemented yet!'); }
+        function selectCustomIndicator() { alert('Custom indicator selection not implemented yet!'); }
+
+        // Populate thank you messages
+        function populateThankYouMessages() {
+            const container = document.getElementById('thankyou-container');
+            container.innerHTML = '';
+            widgetConfig.reactions.forEach((reaction, index) => {
+                container.innerHTML += `
+                    <div class="form-group">
+                        <label class="form-label">${reaction.emoji} ${reaction.text}</label>
+                        <input type="text" class="form-control" data-index="${index}" data-field="title" value="${reaction.title}" placeholder="Thank you title">
+                        <textarea class="form-control" data-index="${index}" data-field="message" rows="2" placeholder="Thank you message">${reaction.message}</textarea>
+                    </div>
+                `;
+            });
+        }
+
+        // Update thank you messages
+        function updateThankYouMessages() {
+            document.querySelectorAll('#thankyou-container input, #thankyou-container textarea').forEach(input => {
+                const index = input.dataset.index;
+                const field = input.dataset.field;
+                widgetConfig.reactions[index][field] = input.value;
+            });
+            populateThankYouMessages();
+            updatePreview();
+        }
+
+        // Update live preview
+        function updatePreview() {
+            const demoButton = document.getElementById('demo-button');
+            const demoIndicator = document.getElementById('demo-indicator');
+            const demoReactions = document.getElementById('demo-reaction-options');
+            const demoPopupTitle = document.getElementById('demo-popup-title');
+            
+            demoButton.innerHTML = `${widgetConfig.mainEmoji}<div id="demo-indicator" class="i-indicator">${widgetConfig.indicator}</div>`;
+            demoButton.style.width = `${widgetConfig.buttonSize}px`;
+            demoButton.style.height = `${widgetConfig.buttonSize}px`;
+            demoButton.style.backgroundColor = widgetConfig.mainColor;
+            demoIndicator.style.backgroundColor = widgetConfig.indicatorColor;
+            demoPopupTitle.textContent = widgetConfig.title;
+
+            demoReactions.innerHTML = '';
+            widgetConfig.reactions.forEach(reaction => {
+                demoReactions.innerHTML += `
+                    <div class="reaction-option" onclick="showThanks('${reaction.emoji}', '${reaction.title}', '${reaction.message}')">
+                        <span class="reaction-emoji">${reaction.emoji}</span>
+                        <span>${reaction.text}</span>
+                    </div>
+                `;
+            });
+
+            const widget = document.getElementById('demo-widget');
+            widget.style.position = 'absolute';
+            widget.style[widgetConfig.position.split('-')[0]] = '20px';
+            widget.style[widgetConfig.position.split('-')[1]] = '20px';
+
+            generateCode();
+        }
+
+        // Show thank you popup
+        function showThanks(emoji, title, message) {
+            const thanksPopup = document.getElementById('demo-thanks');
+            document.getElementById('demo-thanks-emoji').textContent = emoji;
+            document.getElementById('demo-thanks-title').textContent = title;
+            document.getElementById('demo-thanks-message').textContent = message;
+            
+            closeAllPopups();
+            thanksPopup.style.display = 'block';
+            setTimeout(() => {
+                thanksPopup.style.display = 'none';
+            }, widgetConfig.thanksDuration * 1000);
+        }
+
+        // Toggle reactions popup
+        function toggleReactionsPopup() {
+            const popup = document.getElementById('demo-reactions');
+            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            document.getElementById('demo-thanks').style.display = 'none';
+        }
+
+        // Close all popups
+        function closeAllPopups() {
+            document.getElementById('demo-reactions').style.display = 'none';
+            document.getElementById('demo-thanks').style.display = 'none';
+        }
+
+        // Generate widget code
+        function generateCode() {
+            const code = `
+<div class="thumbs-widget" style="position: fixed; ${widgetConfig.position.split('-')[0]}: 20px; ${widgetConfig.position.split('-')[1]}: 20px;">
+    <div class="thumbs-button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'" style="width: ${widgetConfig.buttonSize}px; height: ${widgetConfig.buttonSize}px; background-color: ${widgetConfig.mainColor};">
+        ${widgetConfig.mainEmoji}
+        <div class="i-indicator" style="background-color: ${widgetConfig.indicatorColor}">${widgetConfig.indicator}</div>
+    </div>
+    <div class="thumbs-popup" style="display: none;">
+        <div class="popup-title">${widgetConfig.title}</div>
+        ${widgetConfig.reactions.map(r => `
+            <div class="reaction-option" onclick="this.parentElement.nextElementSibling.style.display='block';this.parentElement.nextElementSibling.querySelector('.thanks-emoji').textContent='${r.emoji}';this.parentElement.nextElementSibling.querySelector('.thanks-title').textContent='${r.title}';this.parentElement.nextElementSibling.querySelector('.thanks-message').textContent='${r.message}';this.parentElement.style.display='none';setTimeout(() => {this.parentElement.nextElementSibling.style.display='none'}, ${widgetConfig.thanksDuration * 1000})">
+                <span class="reaction-emoji">${r.emoji}</span>
+                <span>${r.text}</span>
+            </div>
+        `).join('')}
+        <div class="popup-close" onclick="this.parentElement.style.display='none'">Close</div>
+    </div>
+    <div class="thanks-popup" style="display: none;">
+        <div class="thanks-emoji">${widgetConfig.reactions[0].emoji}</div>
+        <div class="thanks-title">${widgetConfig.reactions[0].title}</div>
+        <div class="thanks-message">${widgetConfig.reactions[0].message}</div>
+        <div class="popup-close" onclick="this.parentElement.style.display='none'">Close</div>
+    </div>
+</div>
+<style>
+.thumbs-widget { position: fixed; z-index: 1000; }
+.thumbs-button { width: ${widgetConfig.buttonSize}px; height: ${widgetConfig.buttonSize}px; background: ${widgetConfig.mainColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: ${widgetConfig.buttonSize / 2}px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; position: relative; }
+.i-indicator { position: absolute; top: 0; right: 0; width: ${widgetConfig.buttonSize * 0.4}px; height: ${widgetConfig.buttonSize * 0.4}px; background: ${widgetConfig.indicatorColor}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: ${widgetConfig.buttonSize * 0.25}px; font-style: italic; font-weight: bold; }
+.thumbs-popup { position: absolute; bottom: ${widgetConfig.buttonSize + 10}px; right: 0; background: white; width: 300px; padding: 15px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; }
+.popup-title { font-weight: 600; margin-bottom: 15px; font-size: 16px; }
+.reaction-option { display: flex; align-items: center; padding: 10px; margin-bottom: 8px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.reaction-option:hover { background: #e9ecef; transform: translateY(-2px); }
+.reaction-emoji { font-size: 24px; margin-right: 10px; }
+.popup-close { text-align: center; color: #4361ee; margin-top: 10px; cursor: pointer; font-weight: 500; }
+.thanks-popup { position: absolute; bottom: ${widgetConfig.buttonSize + 10}px; right: 0; background: white; width: 300px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; text-align: center; }
+.thanks-emoji { font-size: 48px; margin-bottom: 10px; display: inline-block; animation: bounce 1s infinite; }
+.thanks-title { font-weight: 600; margin-bottom: 10px; font-size: 18px; }
+.thanks-message { color: #4a5568; margin-bottom: 15px; }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
+</style>
+            `;
+            document.getElementById('generated-code').textContent = code.trim();
+        }
+
+        // Copy code to clipboard
+        function copyCode() {
+            const code = document.getElementById('generated-code').textContent;
+            navigator.clipboard.writeText(code);
+            showToast('Code copied to clipboard!');
+        }
+
+        // Show toast message
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
+        }
+
+        // Save widget configuration
+        function saveWidgetConfig() {
+            localStorage.setItem('widgetConfig', JSON.stringify(widgetConfig));
+            showToast('Configuration saved!');
+        }
+
+        // Save named configuration
+        function saveNamedConfig() {
+            const name = document.getElementById('config-name').value.trim();
+            if (!name) return showToast('Please enter a configuration name');
+            let savedConfigs = JSON.parse(localStorage.getItem('savedConfigs') || '[]');
+            savedConfigs.push({ name, config: widgetConfig });
+            localStorage.setItem('savedConfigs', JSON.stringify(savedConfigs));
+            updateSavedConfigsList();
+            showToast('Configuration saved!');
+        }
+
+        // Load saved configuration
+        function loadSavedConfig() {
+            const saved = localStorage.getItem('widgetConfig');
+            if (saved) {
+                widgetConfig = JSON.parse(saved);
+                applyConfigToForm();
+            }
+            updateSavedConfigsList();
+        }
+
+        // Apply config to form
+        function applyConfigToForm() {
+            document.getElementById('widget-title').value = widgetConfig.title;
+            document.getElementById('button-size').value = widgetConfig.buttonSize;
+            document.getElementById('thanks-duration').value = widgetConfig.thanksDuration;
+            document.getElementById('main-color').value = widgetConfig.mainColor;
+            document.getElementById('indicator-color').value = widgetConfig.indicatorColor;
+            document.getElementById('widget-position').value = widgetConfig.position;
+            document.getElementById('reaction-options').value = widgetConfig.reactions.map(r => `${r.emoji} ${r.text}`).join('\n');
+            document.querySelector(`#main-emoji-grid .emoji-option[data-emoji="${widgetConfig.mainEmoji}"]`)?.classList.add('selected');
+            document.querySelector(`#indicator-grid .emoji-option[data-emoji="${widgetConfig.indicator}"]`)?.classList.add('selected');
+        }
+
+        // Update saved configurations list
+        function updateSavedConfigsList() {
+            const savedConfigs = JSON.parse(localStorage.getItem('savedConfigs') || '[]');
+            const container = document.getElementById('saved-configs');
+            container.innerHTML = savedConfigs.length ? '' : '<div class="message-box" style="margin-top: 0;"><p>No saved configurations yet.</p></div>';
+            savedConfigs.forEach((config, index) => {
+                container.innerHTML += `
+                    <div class="form-group">
+                        <label class="form-label">${config.name}</label>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="loadConfig(${index})">Load</button>
+                            <button class="btn btn-danger" onclick="deleteConfig(${index})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Load a specific config
+        function loadConfig(index) {
+            const savedConfigs = JSON.parse(localStorage.getItem('savedConfigs') || '[]');
+            widgetConfig = savedConfigs[index].config;
+            applyConfigToForm();
+            updateWidget();
+            updateThankYouMessages();
+            updatePreview();
+            showToast('Configuration loaded!');
+        }
+
+        // Delete a config
+        function deleteConfig(index) {
+            let savedConfigs = JSON.parse(localStorage.getItem('savedConfigs') || '[]');
+            savedConfigs.splice(index, 1);
+            localStorage.setItem('savedConfigs', JSON.stringify(savedConfigs));
+            updateSavedConfigsList();
+            showToast('Configuration deleted!');
+        }
+    </script>
+</body>
+</html>
 
 
 
